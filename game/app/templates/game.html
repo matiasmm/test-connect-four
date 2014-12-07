@@ -1,4 +1,31 @@
 {% extends "base.html" %}
 
 {% block body %}
+        <h2> Hey {{player_id}} !</h2>
+        <div>
+            <table id="table" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <td><button onclick="Game.click(1)">Add</button></td>
+                        <td><button onclick="Game.click(2)">Add</button></td>
+                        <td><button onclick="Game.click(3)">Add</button></td>
+                        <td><button onclick="Game.click(4)">Add</button></td>
+                        <td><button onclick="Game.click(5)">Add</button></td>
+                        <td><button onclick="Game.click(6)">Add</button></td>
+                        <td><button onclick="Game.click(7)">Add</button></td>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    var Game = new Game(baseUrl, {{player_id}}, $('table'), $);
+</script>
 {% endblock %}

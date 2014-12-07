@@ -1,13 +1,24 @@
 {% load staticfiles %}
 <html>
     <head>
-        <script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+
         <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}"/>
+        <link rel="stylesheet" href="{% static 'main.css' %}"/>
 
     </head>
     <body>
     <h1>Connect Four</h1>
+
     {% block body %}
+    {% endblock %}
+
+    <script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main.js' %}"></script>
+    <script>
+        var baseUrl = '{% url 'home' %}';
+    </script>
+
+    {% block scripts %}
     {% endblock %}
 
     </body>

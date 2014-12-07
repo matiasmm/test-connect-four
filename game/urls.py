@@ -4,11 +4,11 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 urlpatterns = patterns('',
-    # Examples:
     url(r'^$', 'game.app.views.new_game', name='home'),
     url(r'^games/(?P<player_id>[0-9]+)$', 'game.app.views.game', name='game'),
-    # url(r'^blog/', include('blog.urls')),
 
-    url(r'^admin/', include(admin.site.urls)),
+    ### API ###
+    url(r'^api/status$', 'game.app.views.get_current_state', name='status'),
+
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
