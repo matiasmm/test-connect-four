@@ -1,0 +1,14 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <script type="text/javascript" src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}"/>
+
+    </head>
+    <body>
+    <h1>Connect Four</h1>
+    {% block body %}
+    {% endblock %}
+
+    </body>
+</html>
