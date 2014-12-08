@@ -1,5 +1,16 @@
 {% extends "base.html" %}
 
 {% block body %}
-<a href="{% url ''"></a>
+
+<h2>Select a player:</h2>
+
+        <p>
+            <h4>
+                <a target="_blank" href="{% url 'game' 1 %}"> Player 1</a>
+            </h4>
+
+            <h4>
+                <a target="_blank" href="{% url 'game' 2 %}"> Player 2</a>
+            </h4>
+        </p>
 {% endblock %}
