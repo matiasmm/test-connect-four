@@ -9,6 +9,7 @@ urlpatterns = patterns('',
 
     ### API ###
     url(r'^api/status$', 'game.app.views.get_current_state', name='status'),
+    url(r'^api/update$', 'game.app.views.update', name='update'),
 
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

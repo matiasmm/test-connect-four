@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 
-class CurrentStatus(models.Model):
+class TableStatus(models.Model):
     row = models.SmallIntegerField()
     col = models.SmallIntegerField()
     player_id = models.IntegerField(null=True, blank=True)
@@ -20,7 +20,29 @@ class CurrentStatus(models.Model):
     @classmethod
     def to_dict(cls):
         r = []
-        for cs in CurrentStatus.objects.all():
+        for cs in cls.objects.all():
             r.append(dict(row=cs.row, col=cs.col, player_id=cs.player_id))
+        return r
+
+
+class GameStatus(models.Model):
+    turn = models.SmallIntegerField(null=True, blank=True)
+    # either null or the id of the player who won
+    ended = models.SmallIntegerField(null=True, blank=True)
+
+
+    @classmethod
+    def restart_game(cls):
+        cls.objects.all().delete()
+        game = cls(turn=1)
+        game.save()
+
+        TableStatus.restart_game()
+
+
+    @classmethod
+    def to_dict(cls):
+        game = cls.objects.first()
+        r = dict(table=TableStatus.to_dict(), turn=game.turn , ended=game.ended)
         return r
 
