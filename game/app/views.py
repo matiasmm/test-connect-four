@@ -24,26 +24,34 @@ def get_current_state(request):
 def is_ended(row, col):
     table = TableStatus.to_dict()
 
-    directions = ((1,1),(-1,-1),(1,-1),(-1,1),(0,1),(1,0),(0,1),(1,0),)
+    directions = ((0,1), (1,0), (1,1), (-1,1))
     for dr, dc in directions:
+        count = 1
         curr_row = row
         curr_col = col
-
-        pl = None
-        count = 0
-
-        while 0 <= curr_row <= 5 and 0 <= curr_col <= 6:
-            ts = table[curr_row][curr_col]
-            if ts != pl:
-                pl = ts
-                count = 0
-            count += 1
-
-            if count == 4 and pl:
-                return pl
-
+        while 0 <= curr_row +dr <= 5 and 0 <= curr_col + dc <= 6:
             curr_row += dr
             curr_col += dc
+
+            if table[curr_row][curr_col] == table[row][col]:
+                count += 1
+            else:
+                break
+
+        curr_row = row
+        curr_col = col
+        while 0 <= curr_row - dr <= 5 and 0 <= curr_col - dc <= 6:
+            curr_row -= dr
+            curr_col -= dc
+
+            if table[curr_row][curr_col] == table[row][col]:
+                count += 1
+            else:
+                break
+
+        if count == 4:
+            return table[row][col]
+
 
 @csrf_exempt
 def update(request):
