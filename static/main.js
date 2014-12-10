@@ -19,16 +19,13 @@ function Game(baseUrl, user_id, $table, $){
         for(r = data.length-1; r >= 0; r--) {
             if (data[r][col] == null) {
                 data[r][col] = user_id;
+                update(r, col);
+                draw();
+                refresh_turn(false);
+                alert('Waiting for the other player');
                 break;
             }
         }
-
-        draw();
-        refresh_turn(false);
-
-        alert('Waiting for the other player');
-        update(r, col);
-
     }
 
     function refresh_turn(v){
@@ -37,6 +34,7 @@ function Game(baseUrl, user_id, $table, $){
             $table.find('thead button').removeAttr('disabled');
         }else{
             $($table.find('thead button')).attr('disabled','disabled');
+            interval = setInterval(get_status, 200);
         }
     }
 
@@ -62,20 +60,8 @@ function Game(baseUrl, user_id, $table, $){
     function get_status(){
         $.ajax({'url': baseUrl + 'api/status',
             success: function(resp) {
-                var col, row, k, table = resp.table;
-                for(k in table) {
-                    row = table[k].row;
-                    col = table[k].col;
-                    if(data[row] == undefined) {
-                        data[row] = [];
-                    }
-                    data[row][col] =  table[k].player_id;
-                }
+                data = resp.table;
                 draw();
-
-                if(resp.turn == user_id) {
-                    refresh_turn(true);
-                }
 
                 if(resp.ended != null) {
                     if(resp.ended == user_id) {
@@ -84,6 +70,11 @@ function Game(baseUrl, user_id, $table, $){
                         alert('You Lost my friend!!!!');
                     }
                     clearInterval(interval);
+                }else {
+                    if(resp.turn == user_id) {
+                        refresh_turn(true);
+                        clearInterval(interval);
+                    }
                 }
             }
         })
@@ -97,7 +88,6 @@ function Game(baseUrl, user_id, $table, $){
     }
 
     main();
-    interval = setInterval(get_status,2000);
 
     this.click = click;
     this.draw = draw;

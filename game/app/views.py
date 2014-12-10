@@ -22,29 +22,28 @@ def get_current_state(request):
 
 
 def is_ended(row, col):
+    table = TableStatus.to_dict()
 
-    pl = None
-    count = 0
-    for ts in TableStatus.objects.filter(col=col):
-        if ts.player_id != pl:
-            pl = ts.player_id
-            count = 0
+    directions = ((1,1),(-1,-1),(1,-1),(-1,1),(0,1),(1,0),(0,1),(1,0),)
+    for dr, dc in directions:
+        curr_row = row
+        curr_col = col
 
-        count += 1
+        pl = None
+        count = 0
 
-        if count == 4:
-            return pl
+        while 0 <= curr_row <= 5 and 0 <= curr_col <= 6:
+            ts = table[curr_row][curr_col]
+            if ts != pl:
+                pl = ts
+                count = 0
+            count += 1
 
-    pl = None
-    for ts in TableStatus.objects.filter(row=row):
-        if ts.player_id != pl:
-            pl = ts.player_id
-            count = 0
+            if count == 4 and pl:
+                return pl
 
-        count += 1
-
-        if count == 4:
-            return pl
+            curr_row += dr
+            curr_col += dc
 
 @csrf_exempt
 def update(request):

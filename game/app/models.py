@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-from django.db import models
 
 class TableStatus(models.Model):
     row = models.SmallIntegerField()
@@ -19,9 +17,9 @@ class TableStatus(models.Model):
 
     @classmethod
     def to_dict(cls):
-        r = []
+        r = [[None]*7 for x in xrange(6)]
         for cs in cls.objects.all():
-            r.append(dict(row=cs.row, col=cs.col, player_id=cs.player_id))
+            r[cs.row][cs.col] = cs.player_id
         return r
 
 
@@ -45,4 +43,3 @@ class GameStatus(models.Model):
         game = cls.objects.first()
         r = dict(table=TableStatus.to_dict(), turn=game.turn , ended=game.ended)
         return r
-
